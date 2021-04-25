@@ -43,6 +43,8 @@ run: ## -
 	# npm run watch runs rollup watch, so our bundled javascript (dist/game.js) stays up to date
 	# - npx launches the server, which hosts the app like it would in production, which uses node. It watches the server
 	# directory and automatically refreshes the server.
+	# TODO: Replace the node server with a entrypoint.sh that reads either specific env variables or GR_%s variables,
+	# and ... puts them into a file that is available to the client runtime. Or something like that.
 	npm run watch & npx nodemon server/node_server.ts
 
 .PHONY: test
