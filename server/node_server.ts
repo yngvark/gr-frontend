@@ -6,8 +6,27 @@ import express from "express"
 import http from "http"
 import https from "https"
 
-const PORT = getEnv("PORT")
-const BACKEND_URL = getEnv("BACKEND_URL")
+run()
+
+function run() {
+    let port:string
+    let backendUrl:string
+
+    try {
+        port = getEnv("PORT")
+        backendUrl = getEnv("GAME_BACKEND_URL")
+    } catch (e:any) {
+        console.log("Error: " + e.message)
+        return
+    }
+
+    let app:express.Application = getApp(backendUrl)
+    let server : http.Server | https.Server = http.createServer(app)
+
+    server.listen(port, () => {
+        console.log(`Listening at http://localhost:${port}`)
+    })
+}
 
 function getEnv(name:string) {
     let e = process.env[name]
@@ -15,10 +34,3 @@ function getEnv(name:string) {
 
     return e
 }
-
-let app:express.Application = getApp(BACKEND_URL)
-let server : http.Server | https.Server = http.createServer(app)
-
-server.listen(PORT, () => {
-    console.log(`Listening at http://localhost:${PORT}`)
-})

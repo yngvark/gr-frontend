@@ -1,16 +1,21 @@
 import {Game} from "./Game";
 import {Network} from "./network/Network";
-import {Logger} from "./Logger";
+// import {Logger} from "./Logger";
 import {WebsocketHandler} from "./network/WebsocketHandler";
 import {Gui} from "./Gui";
 import {ZombieMoveListener} from "./ZombieMoveListener";
 
-const log = Logger.create("index")
+// const log = Logger.create("index")
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+    initGame()
+}, false);
+
+function initGame() {
     console.log("index.ts loaded 33");
 
-    let backendUrl = await getBackendUrl()
+    const backendUrl = (window as any).Gridwalls.backendUrl
+
     console.log("backendUrl: " + backendUrl)
 
     const network = new Network(new WebsocketHandler(backendUrl))
@@ -32,10 +37,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const msg = (document.getElementById("msg") as HTMLInputElement).value
         network.send(msg)
     }
-}, false);
+}
 
-async function getBackendUrl():Promise<string> {
-    const promise = new Promise<string>((resolve, reject) => {
+/*
+// TOOD: Instead of doing it like this, make a Docker entrypoint that writes all env vars MYGAME_* to index.html
+async function getBackendUrlOld():Promise<string> {
+    return new Promise<string>((resolve, reject) => {
         let httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function(res){
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -53,6 +60,4 @@ async function getBackendUrl():Promise<string> {
         httpRequest.open('GET', '/config', true);
         httpRequest.send();
     })
-
-    return promise
-}
+}*/

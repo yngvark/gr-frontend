@@ -17,11 +17,10 @@ build-docker: ## -
 	docker build -t $(IMAGE) .
 
 run-docker: build-docker ## -
-	docker kill zombie-frontend || true
+	(docker kill zombie-frontend || true) 2> /dev/null
 	docker run \
-		-d \
 		-e PORT=3000 \
-		-e BACKEND_URL=ws://localhost:8080/zombie \
+		-e GAME_BACKEND_URL=ws://localhost:8080/zombie \
 		--name zombie-frontend \
 		--rm \
 		-p 30000:3000 \
@@ -45,7 +44,7 @@ run: ## -
 	# directory and automatically refreshes the server.
 	# TODO: Replace the node server with a entrypoint.sh that reads either specific env variables or GR_%s variables,
 	# and ... puts them into a file that is available to the client runtime. Or something like that.
-	npm run watch & npx nodemon server/node_server.ts
+	npm run watch # & npx nodemon server/node_server.ts
 
 .PHONY: test
 test: ## -

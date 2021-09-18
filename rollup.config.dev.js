@@ -3,6 +3,8 @@ import resolve from 'rollup-plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 
+import serve from 'rollup-plugin-serve'
+
 export default {
 
     //  Our games entry point (edit as required)
@@ -56,5 +58,20 @@ export default {
         typescript({
             tsconfig: 'tsconfig-frontend.json'
         }),
+
+        // Host a server (only used for dev, see Dockerfile for prod)
+        // https://www.npmjs.com/package/rollup-plugin-serve
+        serve({
+            contentBase: 'dist',
+            host: 'localhost',
+            port: 3000,
+            onListening: function (server) {
+                const address = server.address()
+                const host = address.address === '::' ? 'localhost' : address.address
+                // by using a bound function, we can access options as `this`
+                const protocol = this.https ? 'https' : 'http'
+                console.log(`Server listening at ${protocol}://${host}:${address.port}/`)
+            }
+        })
     ]
 };

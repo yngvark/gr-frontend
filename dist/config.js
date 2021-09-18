@@ -1,0 +1,1 @@
+window.Gridwalls = null

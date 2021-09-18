@@ -25,6 +25,12 @@ RUN npm run tsc
 FROM node:$NODE_TAG
 WORKDIR /app
 
+RUN apt update -y && \
+    apt install -y wget
+
+RUN wget -O /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && \
+    chmod +x /usr/bin/jq
+
 COPY package* ./
 RUN npm install --production
 
@@ -32,5 +38,8 @@ RUN npm install --production
 #COPY package* ./
 COPY dist ./dist/
 COPY --from=builder /app/server/*.js ./server/
+COPY entrypoint.sh .
 
-CMD ["node", "server/node_server.js" ]
+#CMD ["node", "server/node_server.js" ]
+CMD ["./entrypoint.sh", "dist"]
+
