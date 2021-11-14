@@ -1,8 +1,8 @@
 import {Logger} from '../Logger'
 
 export class WebsocketHandler {
-    private log:Logger = Logger.create(this)
-    private websocket!:WebSocket | null
+    private log: Logger = Logger.create(this)
+    private websocket!: WebSocket | null
     private readonly host: string;
 
     private onOpen!: (event: Event) => void
@@ -15,7 +15,7 @@ export class WebsocketHandler {
         this.host = host
     }
 
-    setOnMessage(caller:any, fn: (event: MessageEvent) => void) {
+    setOnMessage(caller: any, fn: (event: MessageEvent) => void) {
         this.onMessageCaller = caller
         this.onMessage = fn
     }
@@ -24,23 +24,23 @@ export class WebsocketHandler {
         this.log.debug(`Connecting to ${this.host}`)
 
         // noinspection UnnecessaryLocalVariableJS
-        const promise:Promise<void> = new Promise((resolve, reject) => {
+        const promise: Promise<void> = new Promise((resolve, reject) => {
             const websocket = new WebSocket(this.host)
 
-            websocket.onopen = (event:Event) => {
+            websocket.onopen = (event: Event) => {
                 this.log.info("Connected!")
                 this.websocket = websocket
                 if (this.onOpen) this.onOpen(event)
                 resolve()
             }
 
-            websocket.onerror = (event:Event) => {
+            websocket.onerror = (event: Event) => {
                 this.log.error(event)
                 if (this.onError) this.onError(event)
                 reject(event)
             }
 
-            websocket.onclose = (event:CloseEvent) => {
+            websocket.onclose = (event: CloseEvent) => {
                 this.log.info("Disconnected!")
                 if (this.onClose) this.onClose(event)
                 this.websocket = null
@@ -55,12 +55,23 @@ export class WebsocketHandler {
         return promise
     }
 
-    send(msg:string): void {
+    send(msg: string): void {
         this.log.debug("Sending", msg)
+
+        if (this.websocket == null) {
+            this.log.error("Not connected")
+            return
+        }
+
         this.websocket!.send(msg)
     }
 
-    disconnect():void {
+    disconnect(): void {
+        if (this.websocket == null) {
+            this.log.error("Not connected")
+            return
+        }
+
         this.log.info("Disconnecting")
         this.websocket!.close()
     }
