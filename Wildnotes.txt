@@ -1,6 +1,8 @@
 -------------------------------------------------------------------
 Do
 -------------------------------------------------------------------
+x - terraform iac repo
+- aws msk i terraform iac repo https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_cluster
 - Github action for auto-deploy med okctl
 
 - Infra-greier
