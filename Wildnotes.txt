@@ -2,6 +2,23 @@
 Do
 -------------------------------------------------------------------
 x - terraform iac repo
+x - fiks kafka connector for gr-zombie
+- lag kafka-websocket proxy, eller finn bibliotek for det
+  Arkitektur: proxy subscriber på gitte topics. Alle innkommende meldinger forwardes til websocket.
+  Og motsatt. Så frontend må få angi til hvilken topic en melding skal sendes til.
+
+  Vil gjøre om på apiet til å bli mer som
+    kafkaPublisher := kafka.NewPublisher(...)
+
+    webSocket.Listen("/v1/broker", func() {
+        // On connect
+        topic := // Get topic
+        kafkaConsumer := kafka.NewConsumer(topic)
+
+        something something
+    })
+
+- koble gr-frontend til kafka-to-websocket
 - aws msk i terraform iac repo https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_cluster
 - Github action for auto-deploy med okctl
 
