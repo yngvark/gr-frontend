@@ -26,7 +26,8 @@ x - fiks kafka connector for gr-zombie
             kafkaPublisher.Send(msg.data)
 
     # todo, support flere topics
-
+- Spill
+    Lag et map med terreng
 
 - koble gr-frontend til kafka-to-websocket
 - aws msk i terraform iac repo https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/msk_cluster

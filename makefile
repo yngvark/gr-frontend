@@ -29,9 +29,6 @@ run-docker: build-docker ## -
 push: build-docker ## -\
 	docker push $(IMAGE)
 
-run-watch: ## -
-	npm run watch
-
 run-no-watch: ## -
 	npm run dev
 

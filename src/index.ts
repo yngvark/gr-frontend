@@ -7,15 +7,12 @@ import {ZombieMoveListener} from "./ZombieMoveListener";
 
 // const log = Logger.create("index")
 
-document.addEventListener('DOMContentLoaded', () => {
-    initGame()
+document.addEventListener('DOMContentLoaded', async () => {
+    await initGame()
 }, false);
 
-function initGame() {
-    console.log("index.ts loaded 33");
-
+async function initGame() {
     const backendUrl = (window as any).Gridwalls.backendUrl
-
     console.log("backendUrl: " + backendUrl)
 
     const network = new Network(new WebsocketHandler(backendUrl))
@@ -25,12 +22,16 @@ function initGame() {
 
     network.addMessageListener(zombieMoveListener)
 
+    await game.run()
+
     document.getElementById("connectBtn")!.onclick = async () => {
-        await game.run()
+        await network.connect()
+        network.send("hello")
     }
 
     document.getElementById("disconnectBtn")!.onclick = () => {
         game.stop()
+        this.network.disconnect()
     }
 
     document.getElementById("sendBtn")!.onclick = () => {
@@ -38,26 +39,3 @@ function initGame() {
         network.send(msg)
     }
 }
-
-/*
-// TOOD: Instead of doing it like this, make a Docker entrypoint that writes all env vars MYGAME_* to index.html
-async function getBackendUrlOld():Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-        let httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = function(res){
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    let r = JSON.parse(httpRequest.responseText)
-                    if (!r.backendUrl)
-                        reject("backendUrl not found in server configuration: " + httpRequest.responseText)
-                    resolve(r.backendUrl)
-                } else {
-                    reject(httpRequest.response)
-                }
-            }
-        };
-        // httpRequest.open('GET', 'http://localhost:3000/config', true);
-        httpRequest.open('GET', '/config', true);
-        httpRequest.send();
-    })
-}*/
