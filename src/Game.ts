@@ -1,12 +1,9 @@
-import {Network} from "./network/Network";
 import {Gui} from "./Gui";
 
 export class Game {
-    private network: Network;
     private gui: Gui;
 
-    constructor(network: Network, gui:Gui) {
-        this.network = network
+    constructor(gui:Gui) {
         this.gui = gui
     }
 

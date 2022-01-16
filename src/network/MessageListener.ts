@@ -1,3 +1,3 @@
 export interface MessageListener {
-    messageReceived(msg:string): void
+    messageReceived(msg:JSON): void
 }

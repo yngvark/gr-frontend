@@ -4,14 +4,19 @@ import {ZombieMove} from "./ZombieMove";
 import {MainScene} from "./MainScene";
 import {Zombie} from "./Zombie";
 import Sprite = Phaser.GameObjects.Sprite;
+import {WorldMap} from "./draw_map/WorldMap";
+import {Logger} from "./Logger";
 
 export class Gui {
     private readonly TILE_WIDTH:number = 40
+
+    private log:Logger
 
     private game:Phaser.Game;
     private scene:Phaser.Scene;
 
     constructor(readonly xTiles:number, readonly yTiles:number) {
+        this.log = Logger.create(Gui.name)
     }
 
     private zombies:{
@@ -39,9 +44,9 @@ export class Gui {
         window.gw_scene = this.scene
     }
 
-    // zombieMoved(zombieMove: ZombieMove): void {
-    //
-    // }
+    drawMap(map: WorldMap) {
+        this.log.info("Drawing map", map)
+    }
 
     zombieMoved(zombieMoved: ZombieMove): void {
         // console.log("Drawing", zombieMoved)
