@@ -52,7 +52,7 @@ async function initGame() {
 
     document.getElementById("disconnectBtn")!.onclick = () => {
         game.stop()
-        this.network.disconnect()
+        network.disconnect()
     }
 
     document.getElementById("sendBtn")!.onclick = () => {
