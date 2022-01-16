@@ -1,15 +1,15 @@
 import {MessageListener} from "../network/MessageListener";
-import {Gui} from "../Gui";
 import {WorldMap} from "./WorldMap";
+import {MapGui} from "./MapGui";
 
 export class MapCreateListener implements MessageListener {
-    private gui: Gui;
+    private mapGui: MapGui;
 
-    constructor(gui: Gui) {
-        this.gui = gui
+    constructor(gui: MapGui) {
+        this.mapGui = gui
     }
 
     messageReceived(map: JSON):void {
-        this.gui.drawMap(map as unknown as WorldMap)
+        this.mapGui.drawMap(map as unknown as WorldMap)
     }
 }

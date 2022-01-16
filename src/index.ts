@@ -7,6 +7,7 @@ import {ZombieMoveListener} from "./ZombieMoveListener";
 import {WebsocketNetwork} from "./network/WebsocketNetwork";
 import {FakeNetwork} from "./network/FakeNetwork";
 import {MapCreateListener} from "./draw_map/MapCreateListener";
+import {MapGui} from "./draw_map/MapGui";
 
 // const log = Logger.create("index")
 
@@ -19,7 +20,10 @@ async function initGame() {
     console.log("backendUrl: " + backendUrl)
 
     let network:Network
+
     const gui = new Gui(20, 11)
+    const mapGui = new MapGui(gui)
+
     const game = new Game(gui)
     const zombieMoveListener = new ZombieMoveListener(gui)
 
@@ -36,7 +40,10 @@ async function initGame() {
         network = new FakeNetwork()
         await network.connect()
         network.send("hello")
-        network.addMessageListener(new MapCreateListener(gui))
+
+        let listener = new MapCreateListener(mapGui)
+        network.addMessageListener(listener)
+        listener.messageReceived({} as JSON)
     }
 
     document.getElementById("disconnectBtn")!.onclick = () => {
@@ -48,4 +55,5 @@ async function initGame() {
         const msg = (document.getElementById("msg") as HTMLInputElement).value
         network.send(msg)
     }
+
 }

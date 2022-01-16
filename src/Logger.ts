@@ -10,7 +10,7 @@ export class Logger {
             return new Logger(source.toString())
         }
 
-        return new Logger("")
+        return new Logger("xlogger")
     }
 
     constructor(name: string) {

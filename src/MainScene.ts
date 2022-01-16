@@ -1,8 +1,11 @@
 import 'phaser';
 
+type PreLoaderFn = (scene:Phaser.Loader.LoaderPlugin) => void
+
 export class MainScene extends Phaser.Scene {
-    private humanSprite: Phaser.GameObjects.Sprite;
-    private cursors: any;
+    private humanSprite: Phaser.GameObjects.Sprite
+    private cursors: any
+    private preLoaderFns:PreLoaderFn[] = []
 
     constructor() {
         super({
@@ -11,17 +14,27 @@ export class MainScene extends Phaser.Scene {
     }
 
     preload(): void {
-        this.load.image("skeleton", "assets/skeleton.png");
-        this.load.image("human", "assets/human.png");
+        console.log("mainscene preload")
+
+        this.load.image("skeleton", "assets/skeleton.png")
+        this.load.image("human", "assets/human.png")
+
+        for (const preLoaderFn of this.preLoaderFns) {
+            preLoaderFn(this.load)
+        }
+    }
+
+    addPreLoader(preLoaderFn:PreLoaderFn) {
+        this.preLoaderFns.push(preLoaderFn)
     }
 
     private x:integer = 100;
     private y:integer = 100;
 
     create(): void {
-        this.humanSprite = this.add.sprite(this.x, this.y, "human");
-        this.humanSprite.setScale(0.2 , 0.2);
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.humanSprite = this.add.sprite(this.x, this.y, "human")
+        this.humanSprite.setScale(0.2 , 0.2)
+        this.cursors = this.input.keyboard.createCursorKeys()
     }
 
     update(): void {
@@ -47,6 +60,6 @@ export class MainScene extends Phaser.Scene {
             this.y += 15
         }
 
-        this.humanSprite.setPosition(this.x, this.y);
+        this.humanSprite.setPosition(this.x, this.y)
     }
 }
