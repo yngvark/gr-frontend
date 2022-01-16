@@ -1,18 +1,19 @@
-import { expect } from 'chai';
-
-import {Network} from "../../src/network/Network";
+import {expect} from 'chai';
 import {WebsocketHandler} from "../../src/network/WebsocketHandler";
-import {MessageListener} from "../../src/network/MessageListener";
+import {TestMessageListener} from "./TestMessageListener";
+import {WebsocketNetwork} from "../../src/network/WebsocketNetwork";
+import {Broadcaster} from "../../src/network/broadcast/Broadcaster";
 
 describe('Network test', () => {
     it('should notify listeners when message is received', () => {
         const websocketHandler = new TestWebsocketHandler()
-        const network = new Network(websocketHandler as unknown as WebsocketHandler)
+        const broadcaster = new Broadcaster()
+        const network = new WebsocketNetwork(websocketHandler as unknown as WebsocketHandler, broadcaster)
         const listener = new TestMessageListener()
-        network.addMessageListener(listener)
+        broadcaster.addMessageListener("test", listener)
 
         // When
-        websocketHandler.onMessage.call(network, new TestMessageEvent("hello") as MessageEvent)
+        websocketHandler.onMessage.call(network, new TestMessageEvent("test", "hello") as MessageEvent)
 
         // Then
         expect(listener.msgReceived).to.equal("hello")
@@ -29,18 +30,12 @@ class TestWebsocketHandler {
     }
 }
 
-class TestMessageListener implements MessageListener {
-    msgReceived:string
-
-    messageReceived(msg: string) {
-        this.msgReceived = msg
-    }
-}
-
 class TestMessageEvent {
     data:string
+    type:string
 
-    constructor(msg:string) {
+    constructor(type:string, msg:string) {
+        this.type = type
         this.data = msg
     }
 }

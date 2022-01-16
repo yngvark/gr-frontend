@@ -8,6 +8,7 @@ import {WebsocketNetwork} from "./network/WebsocketNetwork";
 import {FakeNetwork} from "./network/FakeNetwork";
 import {MapCreateListener} from "./draw_map/MapCreateListener";
 import {MapGui} from "./draw_map/MapGui";
+import {Broadcaster} from "./network/broadcast/Broadcaster";
 
 // const log = Logger.create("index")
 
@@ -20,30 +21,33 @@ async function initGame() {
     console.log("backendUrl: " + backendUrl)
 
     let network:Network
+    let broadcaster = new Broadcaster()
 
     const gui = new Gui(20, 11)
     const mapGui = new MapGui(gui)
 
-    const game = new Game(gui)
-    const zombieMoveListener = new ZombieMoveListener(gui)
+    broadcaster.addMessageListener("zombieMove", new ZombieMoveListener(gui))
+    broadcaster.addMessageListener("mapCreate", new MapCreateListener(mapGui))
 
+    const game = new Game(gui)
     await game.run()
 
     document.getElementById("connectBtn")!.onclick = async () => {
-        network = new WebsocketNetwork(new WebsocketHandler(backendUrl))
+        network = new WebsocketNetwork(new WebsocketHandler(backendUrl), broadcaster)
         await network.connect()
-        network.send("hello")
-        network.addMessageListener(zombieMoveListener)
+        connect(network)
     }
 
     document.getElementById("fakeConnectBtn")!.onclick = async () => {
-        network = new FakeNetwork()
-        await network.connect()
-        network.send("hello")
+        let fakeNetwork = new FakeNetwork(broadcaster)
+        network = fakeNetwork
 
-        let listener = new MapCreateListener(mapGui)
-        network.addMessageListener(listener)
-        listener.messageReceived({} as JSON)
+        await network.connect()
+        connect(network)
+
+        fakeNetwork.onMessage({
+            data: {},
+        } as MessageEvent)
     }
 
     document.getElementById("disconnectBtn")!.onclick = () => {
@@ -56,4 +60,8 @@ async function initGame() {
         network.send(msg)
     }
 
+}
+
+function connect(network: Network) {
+    network.send("start")
 }

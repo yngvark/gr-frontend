@@ -9,7 +9,7 @@ export class MapCreateListener implements MessageListener {
         this.mapGui = gui
     }
 
-    messageReceived(map: JSON):void {
-        this.mapGui.drawMap(map as unknown as WorldMap)
+    messageReceived(map: any):void {
+        this.mapGui.drawMap(map as WorldMap)
     }
 }

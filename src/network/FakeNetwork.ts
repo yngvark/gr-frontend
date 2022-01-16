@@ -1,10 +1,11 @@
-import {MessageListener} from "./MessageListener";
+import {Broadcaster} from "./broadcast/Broadcaster";
+import {Network} from "./Network";
 
-export class FakeNetwork {
-    private messageListeners:MessageListener[]
+export class FakeNetwork implements Network {
+    private broadcaster:Broadcaster
 
-    constructor() {
-        this.messageListeners = []
+    constructor(broadcaster: Broadcaster) {
+        this.broadcaster = broadcaster
     }
 
     async connect(): Promise<void> {
@@ -16,14 +17,7 @@ export class FakeNetwork {
     disconnect():void {
     }
 
-    addMessageListener(m: MessageListener):void {
-        this.messageListeners.push(m)
-    }
-
-    private onMessage(e:MessageEvent): void {
-        for (const l of this.messageListeners) {
-            let json = JSON.parse(e.data)
-            l.messageReceived(json)
-        }
+    onMessage(e:MessageEvent): void {
+        this.broadcaster.broadcast(e.data)
     }
 }

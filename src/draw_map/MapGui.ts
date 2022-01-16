@@ -3,7 +3,7 @@ import {WorldMap} from "./WorldMap";
 import {Logger} from "../Logger";
 
 export class MapGui {
-    private log:Logger
+    private readonly log:Logger
     private gui: Gui;
 
     constructor(gui:Gui) {
@@ -20,11 +20,11 @@ export class MapGui {
     }
 
     drawMap(worldMap: WorldMap) {
-        this.log.info("Drawing world map")
+        this.log.info("Drawing world map", worldMap)
         const level = [
-            [ 0, 0, 0],
-            [ 0, 8, 0],
-            [ 0, 0, 8],
+            [ 0, 0, 0 ],
+            [ 0, 8, 0 ],
+            [ 0, 0, 8 ],
         ]
 
         let map = this.gui.scene.make.tilemap({

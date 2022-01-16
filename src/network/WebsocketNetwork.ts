@@ -1,15 +1,16 @@
 import {WebsocketHandler} from "./WebsocketHandler";
-import {MessageListener} from "./MessageListener";
+import {Broadcaster} from "./broadcast/Broadcaster";
+import {Network} from "./Network";
 
-export class WebsocketNetwork {
+export class WebsocketNetwork implements Network {
     private websocketHandler:WebsocketHandler
-    private messageListeners:MessageListener[]
+    private broadcaster:Broadcaster
 
-    constructor(websocketHandler: WebsocketHandler) {
+    constructor(websocketHandler: WebsocketHandler, broadcaster: Broadcaster) {
         this.websocketHandler = websocketHandler
         this.websocketHandler.setOnMessage(this, this.onMessage)
 
-        this.messageListeners = []
+        this.broadcaster = broadcaster
     }
 
     async connect(): Promise<void> {
@@ -24,14 +25,7 @@ export class WebsocketNetwork {
         this.websocketHandler.disconnect()
     }
 
-    addMessageListener(m: MessageListener):void {
-        this.messageListeners.push(m)
-    }
-
     private onMessage(e:MessageEvent): void {
-        for (const l of this.messageListeners) {
-            let json = JSON.parse(e.data)
-            l.messageReceived(json)
-        }
+        this.broadcaster.broadcast(e.data)
     }
 }

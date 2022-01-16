@@ -9,7 +9,7 @@ export class ZombieMoveListener implements MessageListener {
         this.gui = gui
     }
 
-    messageReceived(zombieMove: JSON):void {
-        this.gui.zombieMoved(zombieMove as unknown as ZombieMove);
+    messageReceived(zombieMove: any):void {
+        this.gui.zombieMoved(zombieMove as ZombieMove);
     }
 }
