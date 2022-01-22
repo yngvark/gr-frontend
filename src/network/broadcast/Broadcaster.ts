@@ -14,7 +14,17 @@ export class Broadcaster {
     }
 
     broadcast(msg:string) {
+        console.log("-----------------")
+        console.log(msg)
+        if (msg !instanceof String) {
+            this.log.error(msg)
+            throw new Error("Invalid type")
+        }
+        console.log("-----------------2222a")
         let json = JSON.parse(msg)
+        console.log("-----------------2222b")
+
+        console.log(json)
 
         if (!("type" in json)) {
             this.log.debug("Received json", json)

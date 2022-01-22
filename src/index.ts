@@ -9,6 +9,7 @@ import {FakeNetwork} from "./network/FakeNetwork";
 import {MapCreateListener} from "./draw_map/MapCreateListener";
 import {MapGui} from "./draw_map/MapGui";
 import {Broadcaster} from "./network/broadcast/Broadcaster";
+import {WorldMap} from "./draw_map/WorldMap";
 
 // const log = Logger.create("index")
 
@@ -27,7 +28,7 @@ async function initGame() {
     const mapGui = new MapGui(gui)
 
     broadcaster.addMessageListener("zombieMove", new ZombieMoveListener(gui))
-    broadcaster.addMessageListener("mapCreate", new MapCreateListener(mapGui))
+    broadcaster.addMessageListener(MapCreateListener.type, new MapCreateListener(mapGui))
 
     const game = new Game(gui)
     await game.run()
@@ -45,9 +46,14 @@ async function initGame() {
         await network.connect()
         connect(network)
 
-        fakeNetwork.onMessage({
-            data: {},
-        } as MessageEvent)
+        let msg:any = {
+            data: JSON.stringify({
+                type: MapCreateListener.type,
+                hello: "hi there",
+            }),
+        }
+
+        fakeNetwork.onMessage(msg)
     }
 
     document.getElementById("disconnectBtn")!.onclick = () => {

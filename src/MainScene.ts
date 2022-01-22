@@ -1,4 +1,5 @@
 import 'phaser';
+import {Player} from "./features/player/Player";
 
 type PreLoaderFn = (scene:Phaser.Loader.LoaderPlugin) => void
 
@@ -6,6 +7,7 @@ export class MainScene extends Phaser.Scene {
     private humanSprite: Phaser.GameObjects.Sprite
     private cursors: any
     private preLoaderFns:PreLoaderFn[] = []
+    private player:Player = new Player()
 
     constructor() {
         super({
@@ -28,38 +30,43 @@ export class MainScene extends Phaser.Scene {
         this.preLoaderFns.push(preLoaderFn)
     }
 
-    private x:integer = 100;
-    private y:integer = 100;
-
     create(): void {
-        this.humanSprite = this.add.sprite(this.x, this.y, "human")
-        this.humanSprite.setScale(0.2 , 0.2)
+        this.humanSprite = this.add.sprite(0, 0, "human").setOrigin(0, 0)
         this.cursors = this.input.keyboard.createCursorKeys()
     }
 
+    // https://phaser.io/tutorials/making-your-first-phaser-3-game/part7
     update(): void {
-        // https://phaser.io/tutorials/making-your-first-phaser-3-game/part7
+        this.updatePlayer()
+    }
+
+    updatePlayer(): void {
+        this.player.resetChange()
 
         if (this.cursors.left.isDown)
         {
-            this.x -= 15;
+            this.player.moveLeft()
         }
 
         if (this.cursors.right.isDown)
         {
-            this.x += 15;
+            this.player.moveRight()
         }
 
         if (this.cursors.up.isDown)
         {
-            this.y -= 15;
+            this.player.moveUp()
         }
 
         if (this.cursors.down.isDown)
         {
-            this.y += 15
+            this.player.moveDown()
         }
 
-        this.humanSprite.setPosition(this.x, this.y)
+        if (this.player.hasChanged()) {
+            this.humanSprite.setPosition(this.player.x, this.player.y)
+        }
     }
+
+
 }

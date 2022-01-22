@@ -3,6 +3,8 @@ import {WorldMap} from "./WorldMap";
 import {MapGui} from "./MapGui";
 
 export class MapCreateListener implements MessageListener {
+    public static type = "mapCreate"
+
     private mapGui: MapGui;
 
     constructor(gui: MapGui) {

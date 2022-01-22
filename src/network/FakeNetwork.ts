@@ -18,6 +18,9 @@ export class FakeNetwork implements Network {
     }
 
     onMessage(e:MessageEvent): void {
+        console.log("-----------------1")
+        console.log(e)
+        console.log(e.data)
         this.broadcaster.broadcast(e.data)
     }
 }
