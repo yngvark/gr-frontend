@@ -4,7 +4,7 @@ import {Player} from "./features/player/Player";
 type PreLoaderFn = (scene:Phaser.Loader.LoaderPlugin) => void
 
 export class MainScene extends Phaser.Scene {
-    private humanSprite: Phaser.GameObjects.Sprite
+    private playerSprite: Phaser.GameObjects.Sprite
     private cursors: any
     private preLoaderFns:PreLoaderFn[] = []
     private player:Player = new Player()
@@ -31,7 +31,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     create(): void {
-        this.humanSprite = this.add.sprite(0, 0, "human").setOrigin(0, 0)
+        this.playerSprite = this.add.sprite(0, 0, "human").setOrigin(0, 0).setDepth(10)
         this.cursors = this.input.keyboard.createCursorKeys()
     }
 
@@ -64,7 +64,7 @@ export class MainScene extends Phaser.Scene {
         }
 
         if (this.player.hasChanged()) {
-            this.humanSprite.setPosition(this.player.x, this.player.y)
+            this.playerSprite.setPosition(this.player.x, this.player.y)
         }
     }
 

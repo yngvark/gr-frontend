@@ -2,7 +2,7 @@ import {Logger} from "../../Logger";
 
 const acceleration = 2;
 const velocity = 1;
-const gridWidth = 40;
+const gridWidth = 48;
 
 export class Player {
     x:number = 0;
@@ -46,7 +46,8 @@ export class Player {
     }
 
     private getCoord(exact: number) {
-        let result = Math.floor(exact / gridWidth) * gridWidth
+        // let result = Math.floor(exact / gridWidth) * gridWidth
+        let result = exact
         this.log.info(exact, result)
 
         return result
