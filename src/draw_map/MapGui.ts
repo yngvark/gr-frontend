@@ -13,10 +13,8 @@ export class MapGui {
         let _this = this
         gui.scene.addPreLoader((load:Phaser.Loader.LoaderPlugin) => {
             _this.log.info("preLoadMapGui")
-            load.image("map", [
-                "features/draw_map/pipoya-rpg-world-tileset-tiled-15/48x48/pipo-map001.png",
-                "features/draw_map/pipoya-rpg-world-tileset-tiled-15/48x48/pipo-map001_at.png"
-            ])
+            load.image("map1", "features/draw_map/pipoya-rpg-world-tileset-tiled-15/48x48/pipo-map001.png")
+            load.image("map2", "features/draw_map/pipoya-rpg-world-tileset-tiled-15/48x48/pipo-map001_at.png")
         })
     }
 
@@ -24,9 +22,9 @@ export class MapGui {
         this.log.info("Drawing world map", worldMap)
 
         const level = [
-            [0, 8, 30],
-            [60, 180, 181],
-            [200, 300, 800],
+            [0, 1, 2],
+            [100, 101, 102],
+            [300, 301, 302],
         ]
 
         let map = this.gui.scene.make.tilemap({
@@ -34,9 +32,21 @@ export class MapGui {
             tileWidth: 48,
             data: level,
         })
-        let tileSet = map.addTilesetImage("map")
-        map.createStaticLayer(0, tileSet, 0, 0)
+        let tileSet1 = map.addTilesetImage("map1")
+        let tileSet2 = map.addTilesetImage("map2")
+
+        let allTiles = [ tileSet1, tileSet2 ]
+
+        // map.createDynamicLayer('yo1', allTiles, 0, 0)
+        // map.createDynamicLayer('yo2', allTiles, 0, 0)
+
+        // map.createStaticLayer(0, tileSet1, 0, 0)
+        // map.createStaticLayer(0, allTiles, 0, 0)
+        map.createStaticLayer(0, allTiles, 0, 0)
 
         // this.gui.scene.physics.world.setBounds(0, 0, layers.width, layers.height)
+
+
+
     }
 }

@@ -48,7 +48,7 @@ export class Player {
     private getCoord(exact: number) {
         // let result = Math.floor(exact / gridWidth) * gridWidth
         let result = exact
-        this.log.info(exact, result)
+        // this.log.info(exact, result)
 
         return result
     }
