@@ -8,7 +8,6 @@ export class Game {
     }
 
     public async run(): Promise<void> {
-        console.log("Running Game")
         this.gui.run()
     }
 

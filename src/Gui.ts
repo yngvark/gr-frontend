@@ -7,7 +7,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 import {Logger} from "./Logger";
 
 export class Gui {
-    private readonly TILE_WIDTH:number = 40
+    private readonly TILE_WIDTH:number = 48
 
     public readonly scene:MainScene;
 
@@ -28,8 +28,6 @@ export class Gui {
     }
 
     run():void {
-        console.log("Running GUI");
-
         this.game = new Phaser.Game({
             type: Phaser.AUTO,
             backgroundColor: '#333333',

@@ -1,6 +1,6 @@
 import {Gui} from "./Gui";
 import {ZombieMove} from "./ZombieMove";
-import {MessageListener} from "./network/MessageListener";
+import {MessageListener} from "./lib/network/MessageListener";
 
 export class ZombieMoveListener implements MessageListener {
     private gui: Gui;

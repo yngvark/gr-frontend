@@ -1,4 +1,4 @@
-import {MessageListener} from "../network/MessageListener";
+import {MessageListener} from "../../lib/network/MessageListener";
 import {WorldMap} from "./WorldMap";
 import {MapGui} from "./MapGui";
 

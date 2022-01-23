@@ -16,8 +16,6 @@ export class MainScene extends Phaser.Scene {
     }
 
     preload(): void {
-        console.log("mainscene preload")
-
         this.load.image("skeleton", "assets/skeleton.png")
         this.load.image("human", "assets/human.png")
 
@@ -43,25 +41,10 @@ export class MainScene extends Phaser.Scene {
     updatePlayer(): void {
         this.player.resetChange()
 
-        if (this.cursors.left.isDown)
-        {
-            this.player.moveLeft()
-        }
-
-        if (this.cursors.right.isDown)
-        {
-            this.player.moveRight()
-        }
-
-        if (this.cursors.up.isDown)
-        {
-            this.player.moveUp()
-        }
-
-        if (this.cursors.down.isDown)
-        {
-            this.player.moveDown()
-        }
+        if (this.cursors.left.isDown) this.player.moveLeft()
+        if (this.cursors.right.isDown) this.player.moveRight()
+        if (this.cursors.up.isDown) this.player.moveUp()
+        if (this.cursors.down.isDown) this.player.moveDown()
 
         if (this.player.hasChanged()) {
             this.playerSprite.setPosition(this.player.x, this.player.y)

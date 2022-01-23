@@ -1,15 +1,13 @@
 import {Game} from "./Game";
-import {Network} from "./network/Network";
-// import {Logger} from "./Logger";
-import {WebsocketHandler} from "./network/WebsocketHandler";
+import {Network} from "./lib/network/Network";
+import {WebsocketHandler} from "./lib/network/WebsocketHandler";
 import {Gui} from "./Gui";
 import {ZombieMoveListener} from "./ZombieMoveListener";
-import {WebsocketNetwork} from "./network/WebsocketNetwork";
-import {FakeNetwork} from "./network/FakeNetwork";
-import {MapCreateListener} from "./draw_map/MapCreateListener";
-import {MapGui} from "./draw_map/MapGui";
-import {Broadcaster} from "./network/broadcast/Broadcaster";
-import {WorldMap} from "./draw_map/WorldMap";
+import {WebsocketNetwork} from "./lib/network/WebsocketNetwork";
+import {FakeNetwork} from "./lib/network/FakeNetwork";
+import {MapCreateListener} from "./features/draw_map/MapCreateListener";
+import {MapGui} from "./features/draw_map/MapGui";
+import {Broadcaster} from "./lib/network/broadcast/Broadcaster";
 
 // const log = Logger.create("index")
 
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initGame() {
     const backendUrl = (window as any).Gridwalls.backendUrl
-    console.log("backendUrl: " + backendUrl)
 
     let network:Network
     let broadcaster = new Broadcaster()

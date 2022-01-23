@@ -1,5 +1,5 @@
 import {MessageListener} from "../MessageListener";
-import {Logger} from "../../Logger";
+import {Logger} from "../../../Logger";
 
 type MessageListeners = {
     [eventType: string]: MessageListener
@@ -14,10 +14,6 @@ export class Broadcaster {
     }
 
     broadcast(msg:string) {
-        if (msg !instanceof String) {
-            this.log.error(msg)
-            throw new Error("Invalid type")
-        }
         let json = JSON.parse(msg)
 
         if (!("type" in json)) {
